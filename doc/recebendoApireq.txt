@@ -1,0 +1,98 @@
+Temos nossa rota de POST, mas não estamos de fato enviando nenhum dado, isto é, nada é feito com a nossa requisição (req). Primeiramente vamos entender o que estamos recebendo
+
+Em atendimentos.js, antes de enviarmos uma resposta ao cliente, verificaremos qual é a informação que nos é enviada. Escrevermos console.log(req.body), o body, o relativo ao corpo do site, e header seria o cabeçalho.
+
+module.exports = app => { 
+    app.get('/atendimentos', (req, res) => res.send('Você está na       rota de atendimentos e está realizando um GET'))
+
+    app.post('/atendimentos', (req, res) => { 
+        console.log(req.body)
+        res.send('Você está na       rota de atendimentos e está             realizando um 'POST'))
+    })
+
+}
+No área de trabalho do Postman podemos fazer algumas configurações da 
+requisição: tipo de conteúdo, tamanho da requisição, qual user e assim por 
+diante.Neste vídeo trabalharemos apenas com "content-type", 
+isto é, tipo do conteúdo.
+
+O contet-type padrão é o "urlencoded", que está relacionado aos formulários 
+produzidos em html. Na aba "body" na área de trabalho do Postman enviaremos 
+essa requisição com o nome "juliana".
+
+Ao observarmos nosso console, receberemos undefined. Isso ocorreu porque 
+nossa requisição não sabe ler nosso body. Para que a aplicação conseguia 
+entender a requisição, instalaremos uma biblioteca chamada body´-parser, 
+cuja função é justamente converter as requisições para algo que seja 
+legível no JavaScript.
+
+Na linha de comando escreveremos npm install body-parser. Enquanto o downloand 
+da biblioteca é realizado podemos ir chamando essa lib dentro 
+de customExpress.js, pois deveremos alterar como nosso servidor opera, 
+e as traduções não serão apenas para essa requisição específica, 
+mas um modo de operação geral.
+
+Importaremos a biblioteca bodyParser. Então pediremos para que app utilize 
+(use()) essa biblioteca específica. Existem muitas maneiras de realizar 
+essa tradução de requisição, e neste caso utilizaremos o urlenconded com a 
+opção extended: true para que tudo opere normalmente.
+
+const express = require('express')
+const consign = require('consign')
+const bodyParser = require('body-parser')
+
+module.exports = () => {
+ const app = express()
+
+ app.use(bodyParser.urlencoded({ extended: true }))
+
+ consign()
+   .include('controllers')
+   .into(app)
+
+ return app
+}
+Ao enviarmos a requisição veremos em nosso console o nome "juliana", o que 
+significa que a tradução foi realizada. Contudo, a API não é feita só para 
+browser, isto é, não vamos enviar contúdos apenas por um formulário.
+
+Algo muito como de se realizar no frond-end é coletar os dados de um formulário,
+ manipular-los de alguma maneira, transformá-los em objeto json e então 
+ realizar o envio para o back-end.
+
+Portanto para que a nossa API possa ser consumida por outros serviços, 
+adicionaremos essa especificidade do json.
+
+const express = require('express')
+const consign = require('consign')
+const bodyParser = require('body-parser')
+
+module.exports = () => {
+ const app = express()
+
+ app.use(bodyParser.urlencoded({ extended: true }))
+ app.use(bodyParser.json())
+
+ consign()
+   .include('controllers')
+   .into(app)
+
+ return app
+}
+Na área de trabalho do Postman poderemos enviar um objeto json para testar 
+nossa API, e verificaremos que tudo opera como o esperado e objeto é traduzido.
+
+A nossa API está rodando, mas não conseguimos pegar os dados que vêm do servidor 
+e nem retornar dados válidos para quem for consumir nossa API.
+
+Visto que utilizamos consign, o que podemos fazer, após instalar o body-parser, 
+para receber e devolver dados válidos?
+
+Na configuração do nosso servidor, podemos adicionar o parser de json e de 
+urlencoded, da seguinte forma:
+
+ app.use(bodyParser.json())
+ app.use(bodyParser.urlencoded({ extended: true }))
+
+É isso mesmo! Configuramos apenas uma vez na configuração do nosso servidor, 
+adicionando o parser de json e de urlencoded.
