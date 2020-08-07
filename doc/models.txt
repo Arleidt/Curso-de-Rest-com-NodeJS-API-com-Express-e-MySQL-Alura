@@ -1,0 +1,17 @@
+no models enviar para o banco de dados fazer validação com banco de dados 
+validação de regras de negócio e o controller vai decidir pra onde a gnt vai 
+mandar qual a req que vamos chamar qual é o model pra cada requisição
+
+Para salvar os dados na nossa base de dados, usamos a query que a biblioteca do mysql nos disponibiliza.
+
+Agora que já cadastramos o atendimento, queremos cadastrar um novo serviço dentro da tabela Servicos no nosso sistema.
+
+Considerando que este serviço deve possuir id (que será incrementado automaticamente), nome e preço, como seria esse código de inserção?
+
+conexao.query(`INSERT INTO Servicos(nome, preco) VALUES('${nome}', '${preco}')`, (erro, resultados) => {
+...
+   })
+ }
+}
+
+É isso mesmo! Como primeiro parâmetro, passamos a nossa query e, como segundo parâmetro, uma função que será executada logo após a nossa query.

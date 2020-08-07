@@ -1,3 +1,4 @@
+const Atendimento = require('../models/atendimentos');
 //Controle de rotas e o que fazer para acessar cada uma
 //É nele que iremos controlar a rota app.get configuramos a rota de atendimentos
 //e recebendo o app. Portanto quando exportamos esse módulo, exportamos uma 
@@ -10,10 +11,13 @@ module.exports = app => {
 
   //user nos enviando dados
   app.post('/atendimentos', (req, res) => {
-
+    const atendimento = req.body
+    //console.log('Atendimento enviado')
     //ver o que o cliente está enviando para a gente
-    console.log(req.body)
-    res.send('Você está na rota de atendimentos e está realizando um POST')
+    //req.body está recebendo todos dados que estamos enviando
+    //console.log(req.body)
+    Atendimento.adiciona(atendimento)
+    res.send('POST atendimento')
   })
 
 
